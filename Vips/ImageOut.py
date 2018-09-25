@@ -5,6 +5,7 @@ Created on Sat Jun 02 20:45:02 2018
 @author: Hard-
 """
 import time
+import json
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -34,10 +35,19 @@ class ImageOut:
         print(i)
         img = Image.open(fileName+'.png')
         dr = ImageDraw.Draw(img)
+
+        info = []
+
         for blockVo in block:
             if blockVo.isVisualBlock:
                 ################ Rectangle ###################
                 cor = (blockVo.x,blockVo.y, blockVo.x + blockVo.width, blockVo.y + blockVo.height)
+
+                info.append({
+                    'cor': cor,
+                    'id': blockVo.id,
+                })
+
                 line = (cor[0],cor[1],cor[0],cor[3])
                 dr.line(line, fill="red", width=1)
                 line = (cor[0],cor[1],cor[2],cor[1])
@@ -47,10 +57,11 @@ class ImageOut:
                 line = (cor[2],cor[1],cor[2],cor[3])
                 dr.line(line, fill="red", width=1)
                 ###############                ####################
-                font = ImageFont.truetype("arial.ttf", 15)
-                dr.text((blockVo.x,blockVo.y),blockVo.id,(255,0,0),font=font)
+                dr.text((blockVo.x+5,blockVo.y+5), blockVo.id, (255,0,0))
                 #if blockVo.boxs[0].tag != None and blockVo.boxs[0].text != None and not blockVo.boxs[0].text.isspace():
-                
+
+        json.dump(info, open(fileName + '_Block_' + str(i) + '.json', 'w'), indent=2)
+
         saved_path = fileName + '_Block_' + str(i) + '.png'
         img.save(saved_path)
 

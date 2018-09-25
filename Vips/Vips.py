@@ -146,7 +146,7 @@ class Vips:
         node = DomNode(nodeType)
         if nodeType == 1: #ELEMENT NODE
             node.createElement(json_obj['tagName'])
-            attributes = json_obj['attributes']
+            attributes = json_obj.get('attributes')
             if attributes != None:
                 node.setAttributes(attributes)
             visual_cues = json_obj['visual_cues']
