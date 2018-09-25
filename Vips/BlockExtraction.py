@@ -9,7 +9,7 @@ import BlockVo
 import BlockRule
 
 class BlockExtraction:
-    
+
     html = None
     blockList = []
     hrList = []
@@ -23,15 +23,15 @@ class BlockExtraction:
 
     def __init__(self):
         self.block = BlockVo.BlockVo()
-                
+
     def service(self, url, nodeList):
         BlockRule.BlockRule.initialize(nodeList)
         body = nodeList[0]
-        self.initBlock(body, self.block)  
+        self.initBlock(body, self.block)
         print("-----Done Initialization-----")
         self.count3 = 0
         self.dividBlock(self.block)
-        print(self.count2)       
+        print(self.count2)
         print("-----Done Division-----")
         BlockVo.BlockVo.refreshBlock(self.block)
         print("-----Done Refreshing-----")
@@ -39,12 +39,12 @@ class BlockExtraction:
         print("-----Done Filling-----")
         #self.checkText()
         return self.block
-        
+
     def initBlock(self, box, block):
         block.boxs.append(box)
         print(self.count,"####Here Name=",box.nodeName)
         self.count+=1
-            
+
         if(box.nodeName == "hr"):
             self.hrList.append(block)
             self.count1 = 0
@@ -58,21 +58,21 @@ class BlockExtraction:
                         bVo = BlockVo.BlockVo()
                         bVo.parent = block
                         block.children.append(bVo)
-                        self.initBlock(b, bVo)       
+                        self.initBlock(b, bVo)
                 except AttributeError:
                     print(b,",",b.nodeType)
                     sys.exit(0)
-            
+
     def dividBlock(self, block):
         self.count2+=1
         print (self.count2)
         if(block.isDividable and BlockRule.BlockRule.dividable(block)):
-            block.isVisualBlock = False         
+            block.isVisualBlock = False
             for b in block.children:
                 self.count3+=1
                 print(self.count3)
                 self.dividBlock(b)
-                        
+
     def filList(self, block):
         if block.isVisualBlock:
             self.blockList.append(block)
@@ -90,5 +90,3 @@ class BlockExtraction:
                              removed = False
             if(removed):
                 self.blockList.remove(blockVo)
-
-        

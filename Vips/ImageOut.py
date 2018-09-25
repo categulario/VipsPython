@@ -9,7 +9,7 @@ import time
 from PIL import Image, ImageDraw, ImageFont
 
 class ImageOut:
-       
+
     def outImg(self, browser, url, screenshot_path="screenshot.png"):
         print('-----------------------------Getting Screenshot------------------------------------')
         default_width=1920
@@ -18,24 +18,24 @@ class ImageOut:
         print('getting dimensions...')
         browser.set_window_size(default_width, default_height)
         browser.get(url)
-        print('loading...')  
+        print('loading...')
         total_height = browser.execute_script("return document.body.parentNode.scrollHeight")
         #self.browser.quit()
-    
+
         # 2. get screenshot
         print('getting screenshot...')
         browser.set_window_size(default_width, total_height)
         browser.get(url)
-        time.sleep(3) 
+        time.sleep(3)
         browser.save_screenshot(screenshot_path+'.png')
         print('done')
-    
+
     def outBlock(self, block, fileName, i=0):
         print(i)
         img = Image.open(fileName+'.png')
         dr = ImageDraw.Draw(img)
         for blockVo in block:
-            if blockVo.isVisualBlock:               
+            if blockVo.isVisualBlock:
                 ################ Rectangle ###################
                 cor = (blockVo.x,blockVo.y, blockVo.x + blockVo.width, blockVo.y + blockVo.height)
                 line = (cor[0],cor[1],cor[0],cor[3])
@@ -53,7 +53,7 @@ class ImageOut:
                 
         saved_path = fileName + '_Block_' + str(i) + '.png'
         img.save(saved_path)
-    
+
     def outSeparator(self, List, fileName, direction, i=0):
         print(i)
         if (direction == '_vertica_'):
@@ -61,7 +61,7 @@ class ImageOut:
         elif (direction == '_horizontal_'):
             img = Image.open(fileName + '_vertica_' + str(i) + '.png')
         dr = ImageDraw.Draw(img)
-        for sep in List:             
+        for sep in List:
             ################ Rectangle ###################
             dr.rectangle(((sep.x,sep.y),(sep.x + sep.width, sep.y + sep.height)),fill = "blue")
             """
@@ -78,21 +78,21 @@ class ImageOut:
             ###############                ####################
         saved_path = fileName + direction + str(i) + '.png'
         img.save(saved_path)
-    
+
     @staticmethod
-    def outText(fileName, blockList, i=0):     
-        f = open(fileName+'_text_output_'+str(i)+'.txt','a', encoding= 'utf-8')        
+    def outText(fileName, blockList, i=0):
+        f = open(fileName+'_text_output_'+str(i)+'.txt','a', encoding= 'utf-8')
         for blockVo in blockList:
             write_line = str('\n=============================================================\nBlock-'+str(blockVo.id) +'\n')
             text_content = ""
             for box in blockVo.boxs:
-                writable = False              
+                writable = False
                 if box.nodeType == 3:
                     if box.parentNode.nodeName != "script" and box.parentNode.nodeName != "noscript" and box.parentNode.nodeName != "style":
                         if not box.nodeValue.isspace() or box.nodeValue == None:
                             text_content += str(box.nodeValue+'\n')
                             writable = True
-            write_line += text_content + str('\n=============================================================\n')                     
+            write_line += text_content + str('\n=============================================================\n')
             if(writable):
                 try:
                     f.write(write_line)

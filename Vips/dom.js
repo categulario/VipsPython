@@ -1,5 +1,5 @@
 function toJSON(node) {
-  node = node || this; 
+  node = node || this;
   var obj = {
     nodeType: node.nodeType
   };
@@ -11,11 +11,11 @@ function toJSON(node) {
   }
   if (node.nodeValue) {
     obj.nodeValue = node.nodeValue;
-  } 
+  }
   if (node.nodeType == 1){
     obj.visual_cues = getCSS(node);
   }
-  
+
   var attrs = node.attributes;
   if (attrs) {
     var length = attrs.length;

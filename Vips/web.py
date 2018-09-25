@@ -1,12 +1,13 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5 import QtWebEngineWidgets
 import json
+
 from DomNode import DomNode
 
 class Ui_MainWindow(object):
-    
+
     nodeList = []
-    
+
     def toDOM(self, obj):
         if (isinstance(obj,str)):
             json_obj = json.loads(obj)  #use json lib to load our json string
@@ -15,12 +16,12 @@ class Ui_MainWindow(object):
             node = DomNode(nodeType)
             if nodeType == 1: #ELEMENT NODE
                 node.createElement(json_obj['tagName'])
-                
+
                 attributes = json_obj['items']
                 for attribute in attributes:
                     if attribute != None:
                         node.setAttributes(attribute[0],attribute[1])
-                
+
             elif nodeType == 3:
                 node.createTextNode(json_obj['nodeValue'])
             else:
@@ -29,7 +30,7 @@ class Ui_MainWindow(object):
                 childNodes = json_obj['childNodes']
                 for i in range(0, len(childNodes)):
                     node.appendChild(self.toDOM(childNodes[i]))
-            
+
             self.nodeList.append(node)
             return node
         else:
@@ -41,7 +42,6 @@ class Ui_MainWindow(object):
                 print (node.tagName, ", ",node.nodeType)
             else:
                 print (node.nodeValue, ", ",node.nodeType)
-
 
     def someCallback(self, x):
         print("Callback")
@@ -64,10 +64,12 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName("gridLayout")
+
         #go lazada web page
         self.webView = QtWebEngineWidgets.QWebEngineView(self.centralwidget)
         self.webView.setUrl(QtCore.QUrl("http://adam.goucher.ca/parkcalc/"))
         self.webView.setObjectName("webView")
+
         #wait for lazada page to finish loading..., then call runSomeJS function.
         self.webView.loadFinished.connect(self.runSomeJS)
         self.gridLayout.addWidget(self.webView, 0, 0, 1, 1)

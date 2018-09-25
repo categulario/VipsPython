@@ -13,5 +13,5 @@ def main():
     vips = Vips.Vips(unquote("http://adam.goucher.ca/parkcalc/", encoding="utf-8"))
     vips.setRound(2)
     vips.service()
-    
+
 main()
