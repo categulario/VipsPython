@@ -35,7 +35,7 @@ class Ui_MainWindow(object):
             return node
         else:
             print(obj)
-        
+
     def getDomTree(self):
         for node in self.nodeList:
             if(node.nodeType == 1):

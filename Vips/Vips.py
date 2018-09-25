@@ -90,7 +90,7 @@ class Vips:
             """
             #ImageOut.outText(self.fileName, blockList , 'test')
             i+=1
-              
+
         self.browser.quit()
 
     def checkDoc(self, blocks):
